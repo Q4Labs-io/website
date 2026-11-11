@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en" class="no-js" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projects — Q4 Labs</title>
+<meta name="description" content="What Q4 Labs is building. First experiment: yapFlow, an AI learning coach that finds the gaps in what you know.">
+<meta name="theme-color" content="#0B0D10">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@400;500;700;800&family=Silkscreen&display=swap" rel="stylesheet">
+<script>(function(){var t="dark";try{t=localStorage.getItem("q4-theme")||"dark"}catch(e){}document.documentElement.dataset.theme=t})();</script>
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" role="banner">
+  <a class="nav__logo" href="index.html" aria-label="Q4 Labs home">
+    <span class="prompt">&gt;</span><span class="word">q4_labs</span><span class="cursor" aria-hidden="true"></span>
+  </a>
+  <nav aria-label="Main">
+    <ul class="nav__links">
+      <li><a href="index.html">home</a></li>
+      <li><a href="projects.html" aria-current="page">projects</a></li>
+      <li><a href="lab.html">lab</a></li>
+    </ul>
+  </nav>
+  <button class="theme-toggle" type="button" aria-label="Switch to light mode">
+    <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+  </button>
+</header>
+
+<main id="main">
+  <header class="page-head">
+    <div class="wrap">
+      <p class="cmd"><span class="p">$</span> ls -la ./projects</p>
+      <h1 class="display">Things we're <em>building.</em></h1>
+      <p class="lede">One experiment at a time. Each gets a small build, real testers and a number to hit before it earns more of our time.</p>
+    </div>
+  </header>
+
+  <section style="padding-top: 24px" aria-label="Project list">
+    <div class="wrap">
+      <div class="ls-wrap reveal">
+        <table class="ls">
+          <thead>
+            <tr><th scope="col">perms</th><th scope="col">name</th><th scope="col">status</th><th scope="col">what it does</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>drwxr-xr-x</td>
+              <td class="name"><a href="#yapflow">yapflow/</a></td>
+              <td><span class="status">in testing</span></td>
+              <td class="muted">Explain a topic out loud; the AI finds your gaps and makes your flashcards.</td>
+            </tr>
+            <tr>
+              <td>d---------</td>
+              <td class="name muted">exp_002/</td>
+              <td class="muted">planning</td>
+              <td class="muted">Next experiment. Not announced yet.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="yapflow" style="padding-top: 40px" aria-labelledby="yap-title">
+    <div class="wrap">
+      <article class="project reveal">
+        <div>
+          <span class="status">in testing</span>
+          <h2 id="yap-title">yapFlow</h2>
+          <p class="lede">Talking something through is one of the fastest ways to learn it. yapFlow listens while you explain a topic, then coaches you on what you got wrong or left out.</p>
+          <ul>
+            <li>Explain any topic in your own words</li>
+            <li>Spots misconceptions and gaps as you go</li>
+            <li>Coaches you one focused question at a time</li>
+            <li>Turns what's left into flashcards for review</li>
+          </ul>
+          <a class="btn btn--green" href="lab.html#contact">join the test group →</a>
+        </div>
+        <div class="window">
+          <div class="window__bar"><span class="window__dots" aria-hidden="true"><i></i><i></i><i></i></span>session.log</div>
+          <div class="window__body term" style="font-size: 14px">
+            <p class="line"><span class="p">&gt;</span> topic: photosynthesis · level: beginner</p>
+            <p class="line out">plan: 6 concepts to cover</p>
+            <p class="line"><span class="p">&gt;</span> listening…</p>
+            <p class="line out">understood ████████░░ 4/6</p>
+            <p class="line out">gaps: light reactions, role of chlorophyll</p>
+            <p class="line"><span class="p">&gt;</span> session done</p>
+            <p class="line out">flashcards created: 2 · next review: tomorrow<span class="cursor-blink" aria-hidden="true"></span></p>
+          </div>
+        </div>
+      </article>
+
+      <article class="project project--ghost reveal">
+        <div>
+          <p class="cmd"><span class="p">$</span> ./exp_002 --status</p>
+          <h2>loading next experiment<span class="cursor-blink" aria-hidden="true"></span></h2>
+          <p class="lede" style="margin-inline: auto">Got a problem you'd like a small, sharp tool for? We're listening.</p>
+          <p style="margin-top: 20px"><a class="btn" href="lab.html#contact">pitch us a problem →</a></p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section aria-labelledby="log-title">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="cmd"><span class="p">$</span> git log --oneline</p>
+        <h2 class="h2" id="log-title">Lab <em>log.</em></h2>
+      </div>
+      <ol class="log reveal">
+        <li><time>next</time><p><b>yapFlow test round.</b> 10–15 students, two topics. We measure quiz scores before and after, and who comes back within a week.</p></li>
+        <li><time>nov 2026</time><p><b>Identity shipped.</b> The &gt;_ mark, the q4_labs wordmark and this site.</p></li>
+        <li><time>nov 2026</time><p><b>Q4 Labs starts.</b> Three builders, one rule: ship experiments.</p></li>
+      </ol>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <a href="index.html" aria-label="Q4 Labs home">
+      <img class="logo-dark" src="assets/img/logo-on-dark.svg" alt="Q4 Labs" width="96" height="28">
+      <img class="logo-light" src="assets/img/logo-on-light.svg" alt="Q4 Labs" width="96" height="28">
+    </a>
+    <nav aria-label="Footer">
+      <a href="index.html">home</a>
+      <a href="projects.html">projects</a>
+      <a href="lab.html">lab</a>
+    </nav>
+    <div class="social-row">
+      <a href="#" data-todo="q4-x" aria-label="Q4 Labs on X"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.9 2H22l-7.6 8.7L23 22h-6.8l-5.3-6.9L4.8 22H1.7l8.1-9.3L1 2h7l4.8 6.3L18.9 2zm-1.2 18h1.9L6.4 3.9H4.4L17.7 20z"/></svg></a>
+      <a href="#" data-todo="q4-linkedin" aria-label="Q4 Labs on LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.7 4.8 6.1V21h-4v-5.4c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9V21H9z"/></svg></a>
+    </div>
+    <span>© <span data-year>2026</span> Q4 Labs</span>
+  </div>
+</footer>
+
+<script src="assets/js/main.js" defer></script>
+</body>
+</html>
