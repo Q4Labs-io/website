@@ -9,3 +9,5 @@ Thumbs.db
 
 # Deploy tooling
 .vercel/
+.vercel
+.env*
