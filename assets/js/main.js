@@ -132,9 +132,27 @@
     };
     canvas.addEventListener("pointerup", release);
     canvas.addEventListener("pointercancel", release);
+    // the browser can take the pointer away mid-drag without a pointerup
+    canvas.addEventListener("lostpointercapture", release);
     window.addEventListener("q4:theme", () => { green = cssVar("--green"); draw(); });
     window.addEventListener("resize", resize);
     resize();
+
+    /* Keeping the animation alive.
+       The loop pauses while the globe is off screen. Coming back via the browser's
+       back/forward cache, waking a tab, or a GPU reset can leave it paused with a
+       wiped canvas, so every "page is back" signal re-measures, redraws and restarts. */
+    const onScreen = () => {
+      const r = canvas.getBoundingClientRect();
+      return r.bottom > 0 && r.top < innerHeight && r.width > 0;
+    };
+    function restart() {
+      green = cssVar("--green");
+      resize();                                   // re-allocates the canvas and redraws
+      cancelAnimationFrame(raf);
+      running = !reduceMotion && onScreen();
+      if (running) raf = requestAnimationFrame(loop);
+    }
     if (!reduceMotion) {
       const io = new IntersectionObserver(([e]) => {
         running = e.isIntersecting;
@@ -142,6 +160,13 @@
         if (running) raf = requestAnimationFrame(loop);
       });
       io.observe(canvas);
+    }
+    window.addEventListener("pageshow", (e) => { if (e.persisted) restart(); });
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) restart(); });
+    canvas.addEventListener("contextrestored", restart);
+    // canvas box can change size without a window resize (fonts loading, layout shifts)
+    if ("ResizeObserver" in window) {
+      new ResizeObserver(() => { if (canvas.clientWidth !== size) resize(); }).observe(canvas);
     }
     if (document.fonts) document.fonts.ready.then(draw);
   }
