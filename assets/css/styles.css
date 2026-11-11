@@ -215,7 +215,7 @@ a.chip:hover { border-color: var(--green); text-decoration: none; }
   .hero__label h2 { font-size: 14px; }
   .hero__orb {
     position: absolute; z-index: 0;
-    width: var(--orb); right: calc(var(--orb) / -2); top: 50%; transform: translateY(-50%);
+    width: var(--orb); right: calc(var(--orb) / -2); top: 330px; transform: translateY(-50%);
   }
   .hero__orb .orb-text {
     display: block; inset: auto; top: 50%; right: calc(50% - 4px); transform: translateY(-50%);
