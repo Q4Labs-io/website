@@ -137,8 +137,7 @@ img, svg { display: block; max-width: 100%; }
 .btn--green { background: var(--green); color: var(--on-green); border-color: var(--green); }
 .btn--green:hover { filter: brightness(1.08); }
 
-.btn--yapflow { background: var(--yapflow); color: var(--on-yapflow); border-color: var(--yapflow); }
-.btn--yapflow:hover { filter: brightness(2%); }
+.btn--yapflow { background: var(--yapflow); color: var(--on-green); border-color: var(--yapflow);}
 
 /* ---------- Sections ---------- */
 section { padding: clamp(80px, 11vw, 140px) 0; }
