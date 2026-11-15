@@ -8,6 +8,8 @@
   --text: #E8E6E1;
   --muted: #9DA3AE;
   --green: #3DDC84;
+  --yapflow: #AA91E8;
+  --on-yapflow:  #DCD0F7;
   --green-soft: rgba(61, 220, 132, 0.12);
   --on-green: #0B0D10;
   --grid: rgba(61, 220, 132, 0.05);
@@ -134,6 +136,9 @@ img, svg { display: block; max-width: 100%; }
 .btn:hover { text-decoration: none; border-color: var(--green); }
 .btn--green { background: var(--green); color: var(--on-green); border-color: var(--green); }
 .btn--green:hover { filter: brightness(1.08); }
+
+.btn--yapflow { background: var(--yapflow); color: var(--on-yapflow); border-color: var(--yapflow); }
+.btn--yapflow:hover { filter: brightness(2%); }
 
 /* ---------- Sections ---------- */
 section { padding: clamp(80px, 11vw, 140px) 0; }
