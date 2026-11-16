@@ -419,3 +419,37 @@ a.chip:hover { border-color: var(--green); text-decoration: none; }
 .reveal.in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
 .no-js .reveal { opacity: 1; transform: none; }
+
+
+.member {
+  display: flex;
+  flex-direction: column;
+  align-items: center;   /* centres the face, socials, name and handle across the card */
+  text-align: center;    /* centres the text inside h3 and .handle */
+}
+
+.member__face {
+  margin-inline: auto;   /* keeps the face centred if it has a fixed width */
+}
+
+.socials {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.floats {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.team {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 3rem;
+}
