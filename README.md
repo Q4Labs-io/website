@@ -4,7 +4,7 @@ Static site, no build step: plain HTML, CSS and JS.
 
 ```
 index.html        landing: hero + globe viewport, method, yapFlow demo, team, contact
-projects.html     project index (ls -la), yapFlow, next experiment, lab log
+projects.html     project index, yapFlow, log
 lab.html          how we work (the loop + house rules) and contact
 assets/css/styles.css   all styles; tokens are CSS variables in :root
 assets/js/main.js       ASCII globe, scroll roll + parallax, leader lines, typed text, meters, flashcard, reveals
@@ -44,8 +44,8 @@ Building blocks in `styles.css`:
 
 - `.frame` + `.block`: the page is one bordered column; each section is a block with a top rule and registration marks.
 - `.tiles`: a grid whose 1px gap is the hairline, so panels share borders.
-- `.ph` / `.pb`: panel head (label + arrow) and body.
-- `.lbl`: 11px tracked uppercase label. `.spec`: `KEY : value` table.
+- `.ph` / `.pb`: panel head and body.
+- `.lbl`: 11px tracked uppercase label.
 - `.meter` + `data-meter="n"`: segmented bar, lights `n` segments when scrolled into view.
 - `.tag` (chamfered callout) and `.chip` (value badge).
 - `[data-typewrite]`: text lights up character by character once, when seen.
