@@ -92,7 +92,6 @@ img, svg { display: block; max-width: 100%; }
 @keyframes blink { 50% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }
 
-.dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--signal); vertical-align: 0.1em; margin-right: 8px; }
 
 /* Section intro (Linear / Stripe): title left, one sentence right */
 .intro {
@@ -443,7 +442,6 @@ img, svg { display: block; max-width: 100%; }
 }
 .sf__strip span { color: var(--dim); }
 .sf__strip b { font-weight: 400; color: var(--text); display: inline-flex; align-items: center; }
-.sf__strip .dot { margin-right: 8px; }
 .sf__strip .sf__strip-id { margin-left: auto; border-right: 0; border-left: 1px solid var(--line); }
 
 /* baseline */
