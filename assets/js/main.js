@@ -5,23 +5,9 @@
   root.classList.remove("no-js");
 
   const cssVar = (name) => getComputedStyle(root).getPropertyValue(name).trim();
-  const pad = (n, w = 2) => String(n).padStart(w, "0");
-
-  /* ---------- Clock (status bar) + session timer (viewport) ---------- */
-  const clocks = document.querySelectorAll("[data-clock]");
-  const sessions = document.querySelectorAll("[data-session]");
-  const t0 = Date.now();
-  function tickClocks() {
-    const d = new Date();
-    const hms = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-    clocks.forEach((el) => (el.textContent = hms));
-    const s = Math.floor((Date.now() - t0) / 1000);
-    const elapsed = `${pad(Math.floor(s / 3600))}:${pad(Math.floor(s / 60) % 60)}:${pad(s % 60)}`;
-    sessions.forEach((el) => (el.textContent = elapsed));
-  }
-  if (clocks.length || sessions.length) { tickClocks(); setInterval(tickClocks, 1000); }
 
   /* ---------- ASCII globe ---------- */
+  let kickGlobe = null;               // scroll hands the globe momentum through this
   const canvas = document.querySelector("#orb");
   if (canvas) {
     const ctx = canvas.getContext("2d");
@@ -55,9 +41,7 @@
       rings.push(ring);
     }
 
-    let size = 0, dpr = 1, green = cssVar("--signal"), line = cssVar("--muted"), running = true, raf = 0, frame = 0;
-    const yawEl = document.querySelector("[data-yaw]");
-    const pitchEl = document.querySelector("[data-pitch]");
+    let size = 0, dpr = 1, green = cssVar("--signal"), line = cssVar("--muted"), running = true, raf = 0;
 
     /* Orientation is a 3x3 rotation matrix (trackball): horizontal drag turns around
        the screen's vertical axis, vertical drag around its horizontal axis. */
@@ -90,13 +74,6 @@
       canvas.height = size * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       draw();
-    }
-    function telemetry() {
-      if (!yawEl) return;
-      const yaw = ((Math.atan2(M[2], M[0]) * 180) / Math.PI + 360) % 360;
-      const pitch = (Math.asin(Math.max(-1, Math.min(1, -M[5]))) * 180) / Math.PI;
-      yawEl.textContent = yaw.toFixed(1).padStart(5, "0");
-      pitchEl.textContent = (pitch < 0 ? "-" : "+") + Math.abs(pitch).toFixed(1).padStart(4, "0");
     }
     function draw() {
       if (!size) return;
@@ -152,7 +129,6 @@
       }
       orthonormalize();
       draw();
-      if (++frame % 6 === 0) telemetry();
       if (running) raf = requestAnimationFrame(loop);
     }
 
@@ -169,7 +145,7 @@
       lastX = e.clientX; lastY = e.clientY; lastMove = performance.now();
       vx = dx * K; vy = -dy * K;
       turn(vx, vy);
-      if (reduceMotion || !running) { draw(); telemetry(); }
+      if (reduceMotion || !running) draw();
     });
     const release = (e) => {
       if (!dragging) return;
@@ -178,12 +154,17 @@
       if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
       if (reduceMotion || performance.now() - lastMove > 90) { vx = 0; vy = 0; }
     };
+    /* Scrolling rolls the globe forward like a ball under the page, with momentum. */
+    kickGlobe = (dy) => {
+      if (dragging) return;
+      vy = Math.max(-0.08, Math.min(0.08, vy + dy * 0.00012));
+      vx += dy * 0.00003;
+    };
     canvas.addEventListener("pointerup", release);
     canvas.addEventListener("pointercancel", release);
     canvas.addEventListener("lostpointercapture", release);
     window.addEventListener("resize", resize);
     resize();
-    telemetry();
 
     /* The loop pauses off screen. bfcache restores, tab wakes and GPU resets can
        leave it paused with a wiped canvas, so each "page is back" signal restarts it. */
@@ -255,6 +236,31 @@
       const ro = new ResizeObserver(redraw);
       leaderBoxes.forEach((b) => ro.observe(b));
     }
+  }
+
+  /* ---------- Hero parallax: grid slowest, globe in the middle, callouts with the page ---------- */
+  const stage = document.querySelector("[data-parallax]");
+  if (stage && !reduceMotion) {
+    const globe = stage.querySelector(".globe");
+    const grid = stage.querySelector(".viewport__grid");
+    let lastY = window.scrollY, queued = false;
+    const update = () => {
+      queued = false;
+      const y = window.scrollY, dy = y - lastY;
+      lastY = y;
+      const r = stage.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > innerHeight) return;
+      if (kickGlobe && dy) kickGlobe(dy);
+      const d = Math.max(0, Math.min(y, r.height + 400));
+      globe.style.setProperty("--py", (d * 0.32).toFixed(1) + "px");
+      globe.style.setProperty("--ps", (1 + Math.min(d / r.height, 1) * 0.12).toFixed(4));
+      grid.style.setProperty("--gy", (d * 0.12).toFixed(1) + "px");
+      drawLeaders(stage);
+    };
+    window.addEventListener("scroll", () => {
+      if (!queued) { queued = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    update();
   }
 
   /* ---------- Segmented meters ---------- */

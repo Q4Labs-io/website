@@ -3,11 +3,11 @@
 Static site, no build step: plain HTML, CSS and JS.
 
 ```
-index.html        landing: hero + globe viewport, transmission (lab rule), method, yapFlow demo, operators, contact
+index.html        landing: hero + globe viewport, method, yapFlow demo, team, contact
 projects.html     project index (ls -la), yapFlow, next experiment, lab log
 lab.html          how we work (the loop + house rules) and contact
 assets/css/styles.css   all styles; tokens are CSS variables in :root
-assets/js/main.js       ASCII globe, leader lines, typed transmission, meters, clocks, flashcard, reveals
+assets/js/main.js       ASCII globe, scroll roll + parallax, leader lines, typed text, meters, flashcard, reveals
 assets/img/             wordmark SVGs (on dark / on light)
 brand/                  every logo + favicon export (SVG, PNG, ICO)
 favicon.*, apple-touch-icon.png, icon-*.png   served from the site root
@@ -50,6 +50,7 @@ Building blocks in `styles.css`:
 - `.tag` (chamfered callout) and `.chip` (value badge).
 - `[data-typewrite]`: text lights up character by character once, when seen.
 
-Motion rules: the globe is the only ambient motion. Everything else runs once, on an event. `prefers-reduced-motion` turns it all off.
+Motion rules: the globe is the only ambient motion. Scrolling gives it momentum (it rolls forward) and drives a three-layer parallax in the hero: grid slowest, globe in the middle, callouts with the page. Everything else runs once, on an event. `prefers-reduced-motion` turns it all off.
 
-Copy rules: no em dashes.
+Copy rules: no em dashes, no rhetorical headings, no decorative numbering or status text that isn't true.
+

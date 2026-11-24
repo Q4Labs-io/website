@@ -89,7 +89,6 @@
                 <li><a href="lab.html">lab</a></li>
             </ul>
         </nav>
-        <span class="bar__status"><span class="dot"></span>exp-001 live · <time data-clock>--:--:--</time></span>
         <a class="btn" href="lab.html#contact">say hello</a>
     </div>
 </header>
@@ -97,23 +96,18 @@
 <main id="main" class="frame">
 
     <header class="block page-head">
-        <p class="lbl">projects <span class="sig">//</span> one experiment at a time</p>
-        <h1 class="display">Things we're building.</h1>
-        <p class="lede">Each experiment gets a small build, real testers and a number to hit before it earns more of
-            our time.</p>
+        <h1 class="display">Projects</h1>
     </header>
 
-    <section class="block" aria-labelledby="ls-title">
+    <section class="block" aria-label="Project list">
         <div class="head">
-            <div class="head__meta"><p class="lbl">01 <span class="sig">//</span> index</p>
-                <p class="cmd"><span class="p">$</span> ls -la ./projects</p></div>
-            <h2 class="h2" id="ls-title">Two slots. One running.</h2>
+            <div class="head__meta"><p class="lbl">index</p>
+                <p class="cmd"><span class="p">$</span> ls ./projects</p></div>
         </div>
         <div class="ls-wrap reveal">
             <table class="ls">
                 <thead>
                 <tr>
-                    <th scope="col">perms</th>
                     <th scope="col">name</th>
                     <th scope="col">status</th>
                     <th scope="col">what it does</th>
@@ -121,17 +115,15 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td>drwxr-xr-x</td>
                     <td class="name"><a href="#yapflow">yapflow/</a></td>
-                    <td><span class="chip">in mvp</span></td>
-                    <td class="muted">Explain a topic out loud; yapFlow finds your gaps, tutors you and tests your new
-                        knowledge with flashcards.</td>
+                    <td><span class="chip">in MVP</span></td>
+                    <td class="muted">Explain a topic out loud. yapFlow finds your gaps, tutors you and tests you with
+                        flashcards.</td>
                 </tr>
                 <tr>
-                    <td>d---------</td>
-                    <td class="name muted">exp_002/</td>
+                    <td class="name muted">next/</td>
                     <td><span class="chip chip--muted">planning</span></td>
-                    <td class="muted">Next experiment. Not announced yet.</td>
+                    <td class="muted">Not announced yet.</td>
                 </tr>
                 </tbody>
             </table>
@@ -139,32 +131,25 @@
     </section>
 
     <section class="block" id="yapflow" aria-labelledby="yap-title">
-        <div class="head">
-            <div class="head__meta"><p class="lbl">02 <span class="sig">//</span> exp-001</p>
-                <p class="cmd"><span class="p">$</span> cat yapflow/README</p></div>
-        </div>
         <div class="tiles project reveal">
             <div class="project__info">
-                <p class="lbl"><span class="dot"></span>in mvp · stage 02/05</p>
+                <p class="lbl"><span class="dot"></span>in MVP</p>
                 <h2 class="display" id="yap-title">yapFlow</h2>
-                <p class="lede">Talking something through is one of the fastest ways to learn it. yapFlow listens while
-                    you explain a topic, then coaches you on what you got wrong or left out.</p>
+                <p class="lede">yapFlow listens while you explain a topic, then coaches you on what you got wrong or left
+                    out.</p>
                 <ul class="project__list">
-                    <li><span>01</span>Explain any topic in your own words</li>
-                    <li><span>02</span>Spots misconceptions and gaps as you go</li>
-                    <li><span>03</span>Coaches you one focused question at a time</li>
-                    <li><span>04</span>Turns what's left into flashcards for review</li>
+                    <li>Explain any topic in your own words</li>
+                    <li>Spots misconceptions and gaps as you go</li>
+                    <li>Coaches you one question at a time</li>
+                    <li>Turns what's left into flashcards</li>
                 </ul>
                 <div class="btn-row">
-                    <a class="btn btn--signal" href="lab.html#contact">join the test group</a>
-                    <a class="btn" href="https://yapflow-dev.vercel.app" target="_blank" rel="noopener">try the build ↗</a>
+                    <a class="btn btn--signal" href="https://yapflow-dev.vercel.app" target="_blank" rel="noopener">try the build ↗</a>
+                    <a class="btn" href="lab.html#contact">join the test group</a>
                 </div>
             </div>
             <div class="project__term">
-                <div class="ph ph--rule">
-                    <p class="lbl">session.log</p>
-                    <span class="chip chip--yap">yapFlow</span>
-                </div>
+                <div class="ph"><p class="lbl">session.log</p></div>
                 <div class="pb">
                     <p class="line"><span class="p">&gt;</span> topic: what is photosynthesis? · level: beginner</p>
                     <p class="line out">plan: 6 concepts to cover</p>
@@ -172,41 +157,30 @@
                     <p class="line out">understood 4/6</p>
                     <div class="meter meter--log" data-meter="4" aria-hidden="true"></div>
                     <p class="line out">gaps: light reactions, role of chlorophyll</p>
-                    <p class="line out">explains: related concepts (6)</p>
-                    <p class="line"><span class="p">&gt;</span> session done</p>
                     <p class="line"><span class="p">&gt;</span> session saved</p>
                     <p class="line out">flashcards created: 2 · next review: tomorrow<span class="cursor" aria-hidden="true"></span></p>
                 </div>
             </div>
         </div>
-
-        <div class="ghost reveal">
-            <p class="cmd"><span class="p">$</span> ./exp_002 --status</p>
-            <h2 class="h2">Loading next experiment<span class="cursor" aria-hidden="true"></span></h2>
-            <p class="lede">Got a problem you'd like a small, sharp tool for? We're listening.</p>
-            <a class="btn" href="lab.html#contact">pitch us a problem</a>
-        </div>
     </section>
 
     <section class="block" id="log" aria-labelledby="log-title">
         <div class="head">
-            <div class="head__meta"><p class="lbl">03 <span class="sig">//</span> log</p>
-                <p class="cmd"><span class="p">$</span> git log --oneline</p></div>
-            <h2 class="h2" id="log-title">Lab log.</h2>
+            <div class="head__meta"><h2 class="lbl" id="log-title">log</h2>
+                <p class="cmd"><span class="p">$</span> git log</p></div>
         </div>
         <ol class="tiles log reveal">
-            <li><time>next</time><span class="hash">planned</span>
-                <p><b>yapFlow test round.</b> 10 to 15 students, two topics. We measure quiz scores before and after,
-                    and who comes back within a week.</p></li>
-            <li class="now"><time>now</time><span class="hash">active</span>
-                <p><b>yapFlow MVP round.</b> Designing yapFlow's core features, scope and dev cycle.</p></li>
-            <li><time>nov 2026</time><span class="hash">done</span>
-                <p><b>Identity shipped.</b> The &gt;_ mark, the q4_labs wordmark and this <a class="link" href="index.html">site</a>.</p></li>
-            <li><time>nov 2026</time><span class="hash">done</span>
-                <p><b>Q4 Labs starts.</b> Two builders, one rule: ship experiments.</p></li>
+            <li><time>next</time>
+                <p><b>yapFlow test round.</b> 10 to 15 students, two topics. We compare quiz scores before and after,
+                    and count who comes back within a week.</p></li>
+            <li class="now"><time>now</time>
+                <p><b>yapFlow MVP.</b> Building the core features.</p></li>
+            <li><time>nov 2026</time>
+                <p><b>Identity shipped.</b> The &gt;_ mark, the q4_labs wordmark and this site.</p></li>
+            <li><time>nov 2026</time>
+                <p><b>Q4 Labs started.</b></p></li>
         </ol>
     </section>
-
 </main>
 
 <footer class="foot">
@@ -222,7 +196,7 @@
             <a class="icon-btn" href="https://www.linkedin.com/company/q4labs/" data-todo="q4-linkedin"
                aria-label="Q4 Labs on LinkedIn"><svg width="15" height="15" aria-hidden="true"><use href="#icon-linkedin"/></svg></a>
         </div>
-        <span class="end">© <span data-year>2026</span> Q4 Labs · all systems nominal</span>
+        <span class="end">© <span data-year>2026</span> Q4 Labs</span>
     </div>
 </footer>
 
