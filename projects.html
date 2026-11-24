@@ -12,7 +12,7 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400..600&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
@@ -89,20 +89,20 @@
                 <li><a href="lab.html">lab</a></li>
             </ul>
         </nav>
-        <a class="btn" href="lab.html#contact">say hello</a>
+        <a class="btn btn--light" href="lab.html#contact">Say hello</a>
     </div>
 </header>
 
 <main id="main" class="frame">
 
-    <header class="block page-head">
-        <h1 class="display">Projects</h1>
-    </header>
-
-    <section class="block" aria-label="Project list">
-        <div class="head">
-            <div class="head__meta"><p class="lbl">index</p>
-                <p class="cmd"><span class="p">$</span> ls ./projects</p></div>
+    <section class="block page-head" aria-labelledby="page-title">
+        <div class="intro">
+            <div class="intro__title">
+                <p class="cmd"><span class="p">$</span> ls ./projects</p>
+                <h1 class="display" id="page-title">Projects</h1>
+            </div>
+            <p class="lede">One experiment at a time. Each gets a small build, real testers and a target set before it
+                starts.</p>
         </div>
         <div class="ls-wrap reveal">
             <table class="ls">
@@ -144,8 +144,8 @@
                     <li>Turns what's left into flashcards</li>
                 </ul>
                 <div class="btn-row">
-                    <a class="btn btn--signal" href="https://yapflow-dev.vercel.app" target="_blank" rel="noopener">try the build ↗</a>
-                    <a class="btn" href="lab.html#contact">join the test group</a>
+                    <a class="btn btn--signal" href="https://yapflow-dev.vercel.app" target="_blank" rel="noopener">Try the build ↗</a>
+                    <a class="more" href="lab.html#contact">Join the test group</a>
                 </div>
             </div>
             <div class="project__term">
@@ -165,11 +165,13 @@
     </section>
 
     <section class="block" id="log" aria-labelledby="log-title">
-        <div class="head">
-            <div class="head__meta"><h2 class="lbl" id="log-title">log</h2>
-                <p class="cmd"><span class="p">$</span> git log</p></div>
+        <div class="intro">
+            <div class="intro__title">
+                <p class="cmd"><span class="p">$</span> git log</p>
+                <h2 class="h2" id="log-title">Log</h2>
+            </div>
         </div>
-        <ol class="tiles log reveal">
+        <ol class="log reveal">
             <li><time>next</time>
                 <p><b>yapFlow test round.</b> 10 to 15 students, two topics. We compare quiz scores before and after,
                     and count who comes back within a week.</p></li>

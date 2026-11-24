@@ -7,7 +7,8 @@
   const cssVar = (name) => getComputedStyle(root).getPropertyValue(name).trim();
 
   /* ---------- ASCII globe ---------- */
-  let kickGlobe = null;               // scroll hands the globe momentum through this
+  let kickGlobe = null;               // phones: scroll hands the globe momentum
+  let rollGlobe = null;               // desktop scene: scroll progress turns it directly
   const canvas = document.querySelector("#orb");
   if (canvas) {
     const ctx = canvas.getContext("2d");
@@ -155,6 +156,7 @@
       if (reduceMotion || performance.now() - lastMove > 90) { vx = 0; vy = 0; }
     };
     /* Scrolling rolls the globe forward like a ball under the page, with momentum. */
+    rollGlobe = (ax, ay) => { if (!dragging) { turn(ax, ay); if (!running) draw(); } };
     kickGlobe = (dy) => {
       if (dragging) return;
       vy = Math.max(-0.08, Math.min(0.08, vy + dy * 0.00012));
@@ -200,13 +202,20 @@
   const NS = "http://www.w3.org/2000/svg";
   function drawLeaders(container) {
     const svg = container.querySelector(":scope > svg.leaders");
-    if (!svg) return;
-    svg.replaceChildren();
-    if (getComputedStyle(svg).display === "none") return;
+    if (!svg || getComputedStyle(svg).display === "none") return;
     const c = container.getBoundingClientRect();
     container.querySelectorAll("[data-leader]").forEach((el) => {
       const target = document.querySelector(el.dataset.leader);
       if (!target || !el.offsetParent) return;
+      let L = el._leader;
+      if (!L) {
+        const p = document.createElementNS(NS, "path");
+        p.setAttribute("pathLength", "1");
+        const dot = document.createElementNS(NS, "circle");
+        dot.setAttribute("r", 2.5);
+        svg.append(p, dot);
+        L = el._leader = { p, dot };
+      }
       const a = el.getBoundingClientRect();
       const t = target.getBoundingClientRect();
       const tx = t.left + t.width / 2 - c.left, ty = t.top + t.height / 2 - c.top;
@@ -217,12 +226,11 @@
       const ex0 = sx + (left ? 32 : -32);
       const dx = tx - ex0, dy = ty - sy, len = Math.hypot(dx, dy) || 1;
       const ex = tx - (dx / len) * radius, ey = ty - (dy / len) * radius;
-      const p = document.createElementNS(NS, "path");
-      p.setAttribute("d", `M${sx} ${sy} H${ex0} L${ex} ${ey}`);
-      svg.appendChild(p);
-      const dot = document.createElementNS(NS, "circle");
-      dot.setAttribute("cx", ex); dot.setAttribute("cy", ey); dot.setAttribute("r", 2.5);
-      svg.appendChild(dot);
+      L.p.setAttribute("d", `M${sx} ${sy} H${ex0} L${ex} ${ey}`);
+      L.dot.setAttribute("cx", ex); L.dot.setAttribute("cy", ey);
+      const host = el.closest(".callout");
+      const on = !host || host.classList.contains("on");
+      L.p.classList.toggle("on", on); L.dot.classList.toggle("on", on);
     });
   }
   const leaderBoxes = document.querySelectorAll("[data-leaders]");
@@ -238,29 +246,69 @@
     }
   }
 
-  /* ---------- Hero parallax: grid slowest, globe in the middle, callouts with the page ---------- */
-  const stage = document.querySelector("[data-parallax]");
-  if (stage && !reduceMotion) {
-    const globe = stage.querySelector(".globe");
-    const grid = stage.querySelector(".viewport__grid");
-    let lastY = window.scrollY, queued = false;
+  /* ---------- Hero scene ----------
+     Desktop (motion allowed): the stage pins under the bar for a stretch of scroll.
+     Progress 0 to 1 fades the headline out, slides the globe to centre while it
+     grows and turns, then switches the callouts on one at a time.
+     Phones: no pin. Scroll gives the globe momentum and a light parallax. */
+  const scene = document.querySelector("[data-scene]");
+  if (scene) {
+    const stage = scene.querySelector(".scene__stage");
+    const head = scene.querySelector(".hero-head");
+    const view = scene.querySelector(".viewport");
+    const globe = scene.querySelector(".globe");
+    const grid = scene.querySelector(".viewport__grid");
+    const callouts = [...scene.querySelectorAll(".callout")];
+    const desk = window.matchMedia("(min-width: 901px)");
+    const bar = document.querySelector(".bar");
+    const ease = (t) => (t <= 0 ? 0 : t >= 1 ? 1 : 1 - Math.pow(1 - t, 3));
+    let pinned = false, lastY = window.scrollY, lastP = 0, queued = false;
+
     const update = () => {
       queued = false;
       const y = window.scrollY, dy = y - lastY;
       lastY = y;
-      const r = stage.getBoundingClientRect();
+      const r = scene.getBoundingClientRect();
       if (r.bottom < 0 || r.top > innerHeight) return;
-      if (kickGlobe && dy) kickGlobe(dy);
-      const d = Math.max(0, Math.min(y, r.height + 400));
-      globe.style.setProperty("--py", (d * 0.32).toFixed(1) + "px");
-      globe.style.setProperty("--ps", (1 + Math.min(d / r.height, 1) * 0.12).toFixed(4));
-      grid.style.setProperty("--gy", (d * 0.12).toFixed(1) + "px");
-      drawLeaders(stage);
+      if (pinned) {
+        const span = scene.offsetHeight - stage.offsetHeight;
+        const p = Math.min(1, Math.max(0, ((bar ? bar.offsetHeight : 0) - r.top) / span));
+        const dp = p - lastP;
+        lastP = p;
+        if (rollGlobe && dp) rollGlobe(dp * Math.PI, dp * 0.7);
+        const h = Math.min(1, p / 0.18);
+        head.style.setProperty("--ho", (1 - h).toFixed(3));
+        head.style.setProperty("--hy", (-h * 48).toFixed(1) + "px");
+        head.style.visibility = h >= 1 ? "hidden" : "";
+        const g = ease(p / 0.32);
+        globe.style.setProperty("--gx", ((1 - g) * stage.clientWidth * 0.2).toFixed(1) + "px");
+        globe.style.setProperty("--ps", (0.8 + 0.22 * g).toFixed(4));
+        grid.style.setProperty("--gy", (-p * 96).toFixed(1) + "px");
+        callouts.forEach((c, i) => c.classList.toggle("on", p > 0.3 + i * 0.1));
+      } else if (!reduceMotion) {
+        if (kickGlobe && dy) kickGlobe(dy);
+        const d = Math.max(0, Math.min(y, view.offsetHeight + 400));
+        globe.style.setProperty("--py", (d * 0.25).toFixed(1) + "px");
+        grid.style.setProperty("--gy", (d * 0.1).toFixed(1) + "px");
+      }
+      drawLeaders(view);
+    };
+    const setMode = () => {
+      pinned = desk.matches && !reduceMotion;
+      scene.classList.toggle("is-pinned", pinned);
+      ["--ho", "--hy", "visibility"].forEach((k) => head.style.removeProperty(k));
+      ["--gx", "--ps", "--py"].forEach((k) => globe.style.removeProperty(k));
+      grid.style.removeProperty("--gy");
+      if (!pinned) callouts.forEach((c) => c.classList.add("on"));
+      lastP = 0;
+      update();
+      drawLeaders(view);
     };
     window.addEventListener("scroll", () => {
       if (!queued) { queued = true; requestAnimationFrame(update); }
     }, { passive: true });
-    update();
+    desk.addEventListener("change", setMode);
+    setMode();
   }
 
   /* ---------- Segmented meters ---------- */

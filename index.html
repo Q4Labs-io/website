@@ -12,7 +12,7 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400..600&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
@@ -89,89 +89,85 @@
                 <li><a href="lab.html">lab</a></li>
             </ul>
         </nav>
-        <a class="btn" href="lab.html#contact">say hello</a>
+        <a class="btn btn--light" href="lab.html#contact">Say hello</a>
     </div>
 </header>
 
 <main id="main" class="frame">
 
-    <!-- HERO -->
-    <section class="block block--flush" aria-labelledby="hero-title">
-        <div class="hero-head">
-            <h1 class="display" id="hero-title">We ship experiments.</h1>
-            <div class="hero-head__side">
-                <p class="lede">Q4 Labs is a product lab. We build small AI tools, put them in front of real people,
-                    and keep only what works.</p>
-                <div class="btn-row">
-                    <a class="btn btn--signal" href="projects.html">see projects</a>
-                    <a class="btn" href="lab.html">how we work</a>
+    <!-- HERO: pinned scroll scene on desktop -->
+    <section class="block block--flush scene" data-scene aria-labelledby="hero-title">
+        <div class="scene__stage">
+            <div class="hero-head">
+                <h1 class="display" id="hero-title">We ship experiments.</h1>
+                <div class="hero-head__side">
+                    <p class="lede">Q4 Labs is a product lab. We build small AI tools, put them in front of real people,
+                        and keep only what works.</p>
+                    <div class="btn-row">
+                        <a class="btn btn--signal" href="projects.html">See projects</a>
+                        <a class="more" href="lab.html">How we work</a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="viewport" data-leaders data-parallax>
-            <div class="viewport__grid" aria-hidden="true"></div>
-            <span class="ticks" aria-hidden="true"><i></i></span>
-            <svg class="leaders" aria-hidden="true"></svg>
-            <p class="hud hud--br" aria-hidden="true">drag to rotate</p>
+            <div class="viewport" data-leaders>
+                <div class="viewport__grid" aria-hidden="true"></div>
+                <span class="ticks" aria-hidden="true"><i></i></span>
+                <svg class="leaders" aria-hidden="true"></svg>
+                <p class="hud hud--br" aria-hidden="true">drag to rotate</p>
 
-            <div class="globe" id="globe">
-                <canvas id="orb" aria-hidden="true"></canvas>
-            </div>
+                <div class="globe" id="globe">
+                    <canvas id="orb" aria-hidden="true"></canvas>
+                </div>
 
-            <div class="callouts">
-                <a class="callout callout--1" href="#yapflow">
-                    <span class="tag" data-leader="#globe" data-leader-r="0.78"><span>yapFlow</span></span>
-                    <span class="chip">in MVP</span>
-                </a>
-                <a class="callout callout--2 callout--r" href="#team">
-                    <span class="tag" data-leader="#globe" data-leader-r="0.8"><span>team</span></span>
-                    <span class="chip chip--muted">Wills · Bolu</span>
-                </a>
-                <a class="callout callout--3" href="#method">
-                    <span class="tag" data-leader="#globe" data-leader-r="0.8"><span>method</span></span>
-                    <span class="chip chip--muted">build · test · ship</span>
-                </a>
-                <a class="callout callout--4 callout--r" href="lab.html#contact">
-                    <span class="tag" data-leader="#globe" data-leader-r="0.78"><span>contact</span></span>
-                    <span class="chip chip--muted">testers · partners</span>
-                </a>
+                <div class="callouts">
+                    <a class="callout callout--1" href="#yapflow">
+                        <span class="tag" data-leader="#globe" data-leader-r="0.78"><span>yapFlow</span></span>
+                        <span class="chip">in MVP</span>
+                    </a>
+                    <a class="callout callout--2 callout--r" href="#team">
+                        <span class="tag" data-leader="#globe" data-leader-r="0.8"><span>team</span></span>
+                        <span class="chip chip--muted">Wills · Bolu</span>
+                    </a>
+                    <a class="callout callout--3" href="#method">
+                        <span class="tag" data-leader="#globe" data-leader-r="0.8"><span>method</span></span>
+                        <span class="chip chip--muted">build · test · ship</span>
+                    </a>
+                    <a class="callout callout--4 callout--r" href="lab.html#contact">
+                        <span class="tag" data-leader="#globe" data-leader-r="0.78"><span>contact</span></span>
+                        <span class="chip chip--muted">testers · partners</span>
+                    </a>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- METHOD -->
     <section class="block" id="method" aria-labelledby="do-title">
-        <div class="head">
-            <div class="head__meta"><h2 class="lbl" id="do-title">method</h2>
-                <p class="cmd"><span class="p">$</span> cat method.txt</p></div>
+        <div class="intro">
+            <div class="intro__title">
+                <p class="cmd"><span class="p">$</span> cat method.txt</p>
+                <h2 class="h2" id="do-title">Method</h2>
+            </div>
+            <p class="tx__text" data-typewrite>Every idea gets a small build, real users and a number to hit. Hit it,
+                and we double down. Miss it, and we move on.</p>
         </div>
-        <p class="tx__text" data-typewrite>Every idea gets a small build, real users and a number to hit. Hit it, and we
-            double down. Miss it, and we move on.</p>
-        <div class="tiles rows reveal">
-            <div class="row">
-                <h3 class="row__n">Build</h3>
-                <p>Focused tools that do one job. LLMs where they help, plain code where they don't.</p>
-            </div>
-            <div class="row">
-                <h3 class="row__n">Test</h3>
-                <p>Real people use it before we polish anything. We watch what they actually do.</p>
-            </div>
-            <div class="row">
-                <h3 class="row__n">Ship</h3>
-                <p>Each experiment has a fixed window and a target set in advance. We keep what hits it.</p>
-            </div>
+        <div class="cols reveal">
+            <p><b>Build.</b> Focused tools that do one job. LLMs where they help, plain code where they don't.</p>
+            <p><b>Test.</b> Real people use it before we polish anything. We watch what they actually do.</p>
+            <p><b>Ship.</b> Each experiment has a fixed window and a target set in advance. We keep what hits it.</p>
         </div>
     </section>
 
     <!-- YAPFLOW -->
     <section class="block" id="yapflow" aria-labelledby="yap-title">
-        <div class="head">
-            <div class="head__meta"><p class="lbl">first experiment</p>
-                <p class="cmd"><span class="p">$</span> ./yapflow --demo</p></div>
-            <h2 class="h2" id="yap-title">yapFlow</h2>
-            <p class="lede">Explain a topic in your own words. yapFlow spots what's missing or wrong, coaches you through
-                it, and turns the gaps into flashcards.</p>
+        <div class="intro">
+            <div class="intro__title">
+                <p class="cmd"><span class="p">$</span> ./yapflow --demo</p>
+                <h2 class="h2" id="yap-title">yapFlow</h2>
+            </div>
+            <p class="lede">Explain a topic in your own words. yapFlow spots what's missing or wrong, coaches you
+                through it, and turns the gaps into flashcards.</p>
         </div>
 
         <div class="panel reveal">
@@ -212,53 +208,51 @@
             </div>
         </div>
 
-        <div class="after">
-            <a class="btn" href="https://yapflow-dev.vercel.app" target="_blank" rel="noopener">try the build ↗</a>
-            <a class="btn" href="projects.html#yapflow">more on yapFlow</a>
+        <div class="btn-row after">
+            <a class="btn btn--signal" href="https://yapflow-dev.vercel.app" target="_blank" rel="noopener">Try the build ↗</a>
+            <a class="more" href="projects.html#yapflow">More on yapFlow</a>
         </div>
     </section>
 
     <!-- TEAM -->
     <section class="block" id="team" aria-labelledby="team-title">
-        <div class="head">
-            <div class="head__meta"><h2 class="lbl" id="team-title">team</h2>
-                <p class="cmd"><span class="p">$</span> whoami</p></div>
+        <div class="intro">
+            <div class="intro__title">
+                <p class="cmd"><span class="p">$</span> whoami</p>
+                <h2 class="h2" id="team-title">Team</h2>
+            </div>
         </div>
 
-        <div class="tiles ops reveal">
-            <article class="op">
-                <div class="op__body">
-                    <div class="op__face">
-                        <span class="ticks" aria-hidden="true"><i></i></span>
-                        <svg viewBox="0 0 200 200" role="img" aria-label="Line drawing of Wills"><use href="#face-wills"/></svg>
-                    </div>
-                    <div>
-                        <h3 class="h3">Wills</h3>
-                        <p class="muted">Co-founder. Backend.</p>
-                        <div class="icons">
-                            <a class="icon-btn" href="https://www.linkedin.com/in/ekanem-wills-17we/" target="_blank"
-                               rel="noopener" aria-label="Wills on LinkedIn"><svg width="15" height="15" aria-hidden="true"><use href="#icon-linkedin"/></svg></a>
-                            <a class="icon-btn" href="https://x.com/forThe3rd" target="_blank" rel="noopener"
-                               aria-label="Wills on X"><svg width="14" height="14" aria-hidden="true"><use href="#icon-x"/></svg></a>
-                            <a class="icon-btn" href="https://wills-willz01s-projects.vercel.app/" target="_blank"
-                               rel="noopener" aria-label="Wills's website"><svg width="15" height="15" aria-hidden="true"><use href="#icon-site"/></svg></a>
-                        </div>
+        <div class="cols cols--2 reveal">
+            <article class="member">
+                <div class="member__face">
+                    <span class="ticks" aria-hidden="true"><i></i></span>
+                    <svg viewBox="0 0 200 200" role="img" aria-label="Line drawing of Wills"><use href="#face-wills"/></svg>
+                </div>
+                <div>
+                    <h3 class="h3">Wills</h3>
+                    <p>Co-founder. Backend.</p>
+                    <div class="icons">
+                        <a class="icon-btn" href="https://www.linkedin.com/in/ekanem-wills-17we/" target="_blank"
+                           rel="noopener" aria-label="Wills on LinkedIn"><svg width="15" height="15" aria-hidden="true"><use href="#icon-linkedin"/></svg></a>
+                        <a class="icon-btn" href="https://x.com/forThe3rd" target="_blank" rel="noopener"
+                           aria-label="Wills on X"><svg width="14" height="14" aria-hidden="true"><use href="#icon-x"/></svg></a>
+                        <a class="icon-btn" href="https://wills-willz01s-projects.vercel.app/" target="_blank"
+                           rel="noopener" aria-label="Wills's website"><svg width="15" height="15" aria-hidden="true"><use href="#icon-site"/></svg></a>
                     </div>
                 </div>
             </article>
-            <article class="op">
-                <div class="op__body">
-                    <div class="op__face">
-                        <span class="ticks" aria-hidden="true"><i></i></span>
-                        <svg viewBox="0 0 200 200" role="img" aria-label="Line drawing of Bolu"><use href="#face-bolu"/></svg>
-                    </div>
-                    <div>
-                        <h3 class="h3">Bolu</h3>
-                        <p class="muted">Co-founder. Frontend.</p>
-                        <div class="icons">
-                            <a class="icon-btn" href="https://www.linkedin.com/in/ogunleye-boluwatife-aicmc-acarb-8437051a9/"
-                               target="_blank" rel="noopener" aria-label="Bolu on LinkedIn"><svg width="15" height="15" aria-hidden="true"><use href="#icon-linkedin"/></svg></a>
-                        </div>
+            <article class="member">
+                <div class="member__face">
+                    <span class="ticks" aria-hidden="true"><i></i></span>
+                    <svg viewBox="0 0 200 200" role="img" aria-label="Line drawing of Bolu"><use href="#face-bolu"/></svg>
+                </div>
+                <div>
+                    <h3 class="h3">Bolu</h3>
+                    <p>Co-founder. Frontend.</p>
+                    <div class="icons">
+                        <a class="icon-btn" href="https://www.linkedin.com/in/ogunleye-boluwatife-aicmc-acarb-8437051a9/"
+                           target="_blank" rel="noopener" aria-label="Bolu on LinkedIn"><svg width="15" height="15" aria-hidden="true"><use href="#icon-linkedin"/></svg></a>
                     </div>
                 </div>
             </article>
@@ -274,8 +268,8 @@
                 <p class="line"><span class="p">$</span> echo $LOOKING_FOR</p>
                 <p class="line out">early testers, partners, and problems that need a small tool<span class="cursor" aria-hidden="true"></span></p>
                 <div class="btn-row">
-                    <a class="btn btn--signal" href="lab.html#contact">get in touch</a>
-                    <a class="btn" href="projects.html">see projects</a>
+                    <a class="btn btn--signal" href="lab.html#contact">Get in touch</a>
+                    <a class="more" href="projects.html">See projects</a>
                 </div>
             </div>
         </div>
