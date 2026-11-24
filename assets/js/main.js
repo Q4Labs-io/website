@@ -42,7 +42,15 @@
       rings.push(ring);
     }
 
-    let size = 0, dpr = 1, green = cssVar("--signal"), line = cssVar("--muted"), running = true, raf = 0;
+    /* Colours come from the stylesheet, with fallbacks: Safari can run this script
+       before the stylesheet has loaded, and an empty colour draws black on black. */
+    let green = "#3DDC84", line = "#8E9691";
+    const readColours = () => {
+      green = cssVar("--signal") || "#3DDC84";
+      line = cssVar("--muted") || "#8E9691";
+    };
+    readColours();
+    let size = 0, dpr = 1, running = true, raf = 0;
 
     /* Orientation is a 3x3 rotation matrix (trackball): horizontal drag turns around
        the screen's vertical axis, vertical drag around its horizontal axis. */
@@ -175,14 +183,17 @@
       return r.bottom > 0 && r.top < innerHeight && r.width > 0;
     };
     function restart() {
+      readColours();
       resize();
       cancelAnimationFrame(raf);
       running = !reduceMotion && onScreen();
       if (running) raf = requestAnimationFrame(loop);
     }
+    window.addEventListener("load", () => { readColours(); resize(); });
     if (reduceMotion) {
       running = false;
     } else {
+      raf = requestAnimationFrame(loop);
       new IntersectionObserver(([e]) => {
         running = e.isIntersecting;
         cancelAnimationFrame(raf);
@@ -294,7 +305,9 @@
       drawLeaders(view);
     };
     const setMode = () => {
-      pinned = desk.matches && !reduceMotion;
+      // a viewer frame that grows to the page height makes "100svh" the whole page: no pin there
+      const realWindow = window.innerHeight <= (window.screen ? window.screen.height : 1600) + 80;
+      pinned = desk.matches && !reduceMotion && realWindow;
       scene.classList.toggle("is-pinned", pinned);
       ["--ho", "--hy", "visibility"].forEach((k) => head.style.removeProperty(k));
       ["--gx", "--ps", "--py"].forEach((k) => globe.style.removeProperty(k));
