@@ -241,24 +241,92 @@
     </section>
 </main>
 
-<footer class="foot">
-    <div class="frame foot__in">
-        <a class="logo" href="index.html" aria-label="Q4 Labs home"><span class="p">&gt;</span>q4_labs</a>
-        <nav aria-label="Footer">
-            <a href="index.html">home</a>
-            <a href="projects.html">projects</a>
-            <a href="lab.html">lab</a>
-        </nav>
-        <div class="icons">
-            <a class="icon-btn" href="#" data-todo="q4-x" aria-label="Q4 Labs on X"><svg width="14" height="14" aria-hidden="true"><use href="#icon-x"/></svg></a>
-            <a class="icon-btn" href="https://www.linkedin.com/company/q4labs/" data-todo="q4-linkedin"
-               aria-label="Q4 Labs on LinkedIn"><svg width="15" height="15" aria-hidden="true"><use href="#icon-linkedin"/></svg></a>
+<!-- FOOTER: shared by all three pages; keep the markup identical apart from aria-current -->
+<footer class="sf" aria-labelledby="sf-title">
+    <div class="frame">
+
+        <div class="block sf__top">
+            <section class="sf__id" aria-labelledby="sf-title">
+                <h2 class="vh" id="sf-title">Q4 Labs</h2>
+                <a class="sf__logo" href="index.html" aria-label="Q4 Labs home">
+                    <img src="assets/img/logo-on-dark.svg" alt="" width="96" height="28">
+                </a>
+                <p class="sf__statement">Every idea here gets a build, a target and a verdict.</p>
+                <dl class="sf__spec">
+                    <div><dt>system</dt><dd>q4_labs</dd></div>
+                    <div><dt>class</dt><dd>product lab</dd></div>
+                    <div><dt>est.</dt><dd>nov 2026</dd></div>
+                    <div><dt>running</dt><dd><a href="projects.html#yapflow">exp/yapflow</a> <span class="chip">mvp</span></dd></div>
+                </dl>
+            </section>
+
+            <nav class="sf__nav" aria-label="Footer">
+                <p class="sf__prompt" aria-hidden="true"><span class="p">~/q4labs $</span> <span data-sf-cmd>ls</span><span class="cursor"></span></p>
+                <div class="sf__dirs">
+                    <div class="sf__dir">
+                        <p class="sf__dirname">explore/</p>
+                        <ul>
+                            <li><a href="index.html" aria-current="page" data-cmd="open index.html">home</a></li>
+                            <li><a href="index.html#method" data-cmd="open index.html#method">method</a></li>
+                            <li><a href="index.html#yapflow" data-cmd="open index.html#yapflow">yapflow demo</a></li>
+                            <li><a href="index.html#team" data-cmd="open index.html#team">team</a></li>
+                        </ul>
+                    </div>
+                    <div class="sf__dir">
+                        <p class="sf__dirname">projects/</p>
+                        <ul>
+                            <li><a href="projects.html" data-cmd="open projects.html">index</a></li>
+                            <li><a href="projects.html#yapflow" data-cmd="open projects.html#yapflow">yapflow</a></li>
+                            <li><a href="projects.html#log" data-cmd="open projects.html#log">log</a></li>
+                        </ul>
+                    </div>
+                    <div class="sf__dir">
+                        <p class="sf__dirname">lab/</p>
+                        <ul>
+                            <li><a href="lab.html" data-cmd="open lab.html">how we work</a></li>
+                            <li><a href="lab.html#contact" data-cmd="open lab.html#contact">contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="sf__dir">
+                        <p class="sf__dirname">connect/</p>
+                        <ul>
+                            <li><a href="mailto:ekanemwills1@gmail.com" data-cmd="mail ekanemwills1@gmail.com">email<span class="ext" aria-hidden="true">↗</span></a></li>
+                            <li><a href="https://yapflow-dev.vercel.app" target="_blank" rel="noopener" data-cmd="open yapflow-dev.vercel.app">try yapflow<span class="ext" aria-hidden="true">↗</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="sf__summary" aria-hidden="true" data-sf-tree>4 directories, 11 files</p>
+            </nav>
         </div>
-        <span class="end">© <span data-year>2026</span> Q4 Labs</span>
+
+        <div class="sf__field" data-sf-field>
+            <canvas aria-hidden="true"></canvas>
+            <p class="sf__note sf__note--tl" aria-hidden="true">q4_labs <span>//</span> ascii render</p>
+            <p class="sf__note sf__note--tr" aria-hidden="true">point here to move the light</p>
+            <p class="sf__note sf__note--bl" aria-hidden="true">light x <span data-sf-x>000</span> y <span data-sf-y>00</span></p>
+        </div>
+
+        <ul class="sf__strip" aria-label="Lab status">
+            <li><span>status</span><b><i class="dot"></i>building</b></li>
+            <li><span>now</span><b>yapflow mvp</b></li>
+            <li><span>next</span><b>test round</b></li>
+            <li class="sf__strip-id"><span>q4_labs</span><b>product lab</b></li>
+        </ul>
+
+        <div class="sf__base">
+            <p>© <span data-year>2026</span> Q4 Labs. All rights reserved.</p>
+            <div class="sf__base-end">
+                <a class="icon-btn" href="https://www.linkedin.com/company/q4labs/" target="_blank" rel="noopener"
+                   aria-label="Q4 Labs on LinkedIn"><svg width="15" height="15" aria-hidden="true"><use href="#icon-linkedin"/></svg></a>
+                <a class="sf__totop" href="#top">back to top <span aria-hidden="true">↑</span></a>
+            </div>
+        </div>
+
     </div>
 </footer>
 
 <script src="assets/js/earth-mask.js" defer></script>
 <script src="assets/js/main.js" defer></script>
+<script src="assets/js/footer.js" defer></script>
 </body>
 </html>

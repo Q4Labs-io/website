@@ -8,6 +8,7 @@ projects.html     project index, Yapflow, log
 lab.html          how we work (the loop + house rules) and contact
 assets/css/styles.css   all styles; tokens are CSS variables in :root
 assets/js/earth-mask.js land mask for the globe
+assets/js/footer.js     footer: hover prompt, tree summary, ASCII wordmark field
 assets/js/main.js       ASCII earth globe, scroll roll + parallax, leader lines, typed text, meters, flashcard, reveals
 assets/img/             wordmark SVGs (on dark / on light)
 brand/                  every logo + favicon export (SVG, PNG, ICO)
@@ -25,7 +26,8 @@ Then open http://localhost:4173.
 ## Fill these in
 
 - `lab.html`, contact: swap the Gmail address for an @q4labs.io one once the domain is live.
-- Q4 Labs X icon (footer on all 3 pages): `href="#"` with `data-todo="q4-x"`. Replace `#` with the real page URL.
+- Q4 Labs on X: the old footer linked to `#`, so it was removed. Add an X icon next to LinkedIn in `.sf__base-end` once the account exists.
+- Footer status strip (`.sf__strip`): `now` and `next` mirror the log on projects.html. Update them together.
 
 ## Design system: "lab instrument panel"
 
@@ -59,3 +61,13 @@ Building blocks in `styles.css`:
 Hero scene: on desktop the hero pins under the bar for about 1.6 screens of scroll. Progress fades the headline out, glides the globe to centre while it grows and turns, then switches the four callouts on one at a time with their leader lines drawing in. Phones get no pin: the globe takes scroll momentum and a light parallax. `prefers-reduced-motion` turns all of it off and shows everything.
 
 Copy rules: no em dashes, no rhetorical headings, no decorative numbering or status text that isn't true.
+
+## Footer
+
+Shared by all three pages (identical markup apart from `aria-current`), inside `.frame` so the column lines run to the bottom.
+
+- Identity: wordmark, one-line statement, spec rows (system, class, est., running).
+- Directory: a `tree`-style listing of the real routes. Hovering a link writes the command it would run into the prompt line; the summary line ("4 directories, 11 files") is counted from the markup.
+- ASCII field: the `q4_labs` wordmark rendered as a character grid by `footer.js`, lit by a light that drifts slowly and follows the pointer. The readout is the light's own grid position. Runs at about 30 fps only while on screen; reduced motion draws it once.
+- Status strip: status, now, next, identifier. No live metrics.
+- Baseline: copyright, LinkedIn, back to top. No legal pages exist yet, so none are linked.

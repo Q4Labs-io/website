@@ -369,13 +369,113 @@ img, svg { display: block; max-width: 100%; }
 /* ---------- Lab ---------- */
 .loop .meter { --h: 3px; --n: 5; margin-bottom: 16px; }
 
-/* ---------- Footer ---------- */
-.foot { border-top: 1px solid var(--line); }
-.foot__in { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px; padding: 24px var(--pad); font-size: 13px; color: var(--muted); }
-.foot__in nav { display: flex; gap: 20px; font-family: var(--mono); font-size: 12px; }
-.foot__in nav a:hover { color: var(--text); }
-.foot__in .end { margin-left: auto; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); }
-@media (max-width: 640px) { .foot__in .end { margin-left: 0; width: 100%; } }
+/* ---------- Footer: the last panel of the instrument ----------
+   identity + directory tree, an ASCII wordmark lit by a moving light (footer.js),
+   a status strip, and the baseline. Lives inside .frame so the column lines run
+   all the way down. */
+.vh { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+.sf__top {
+  display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 56px 72px;
+  padding-block: clamp(56px, 7vw, 96px) clamp(48px, 6vw, 80px);
+}
+
+/* identity */
+.sf__id { display: grid; gap: 28px; align-content: start; }
+.sf__logo { display: inline-block; justify-self: start; }
+.sf__logo img { height: 26px; width: auto; }
+.sf__statement { margin: 0; font-family: var(--mono); font-size: clamp(18px, 1.55vw, 21px); line-height: 1.4; letter-spacing: -0.035em; color: var(--text); max-width: 28ch; text-wrap: balance; }
+.sf__spec { margin: 0; display: grid; border-top: 1px solid var(--line); }
+.sf__spec > div { display: grid; grid-template-columns: 92px minmax(0, 1fr); align-items: baseline; padding: 9px 0; border-bottom: 1px dashed var(--line-2); }
+.sf__spec dt { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); }
+.sf__spec dd { margin: 0; font-family: var(--mono); font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 10px; }
+.sf__spec dd::before { content: ": "; color: var(--dim); margin-right: -4px; }
+.sf__spec a { color: var(--text); }
+.sf__spec a:hover { color: var(--signal); }
+
+/* directory tree */
+.sf__nav { display: flex; flex-direction: column; gap: 28px; }
+.sf__summary { margin: auto 0 0; padding-top: 14px; border-top: 1px dashed var(--line-2); font-family: var(--mono); font-size: 12px; color: var(--dim); }
+.sf__prompt { margin: 0; padding-bottom: 14px; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 13px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sf__prompt .p { color: var(--signal); }
+.sf__prompt .cursor { width: 0.55em; height: 1em; margin-left: 3px; }
+.sf__dirs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px 24px; }
+.sf__dirname { margin: 0 0 6px; font-family: var(--mono); font-size: 12px; color: var(--text); letter-spacing: 0.02em; }
+.sf__dir ul { list-style: none; margin: 0; padding: 0; }
+.sf__dir li { position: relative; padding-left: 22px; }
+.sf__dir li::before { content: ""; position: absolute; left: 4px; top: 0; bottom: 0; border-left: 1px solid var(--line-2); }
+.sf__dir li:last-child::before { bottom: 50%; }
+.sf__dir li::after {
+  content: ""; position: absolute; left: 4px; top: 50%; width: 10px; border-top: 1px solid var(--line-2);
+  transition: width 0.2s ease, border-color 0.2s ease;
+}
+.sf__dir a {
+  display: inline-flex; align-items: center; min-height: 34px; font-family: var(--mono); font-size: 13px; color: var(--muted);
+  transition: color 0.15s ease, translate 0.2s ease;
+}
+/* hover: the branch lights up, the label steps in, a cursor appears after it */
+.sf__dir a::after {
+  content: ""; width: 0.5em; height: 1.05em; margin-left: 4px; background: var(--signal);
+  opacity: 0; transition: opacity 0.15s ease;
+}
+.sf__dir li:hover::after, .sf__dir li:focus-within::after { width: 14px; border-color: var(--signal); }
+.sf__dir a:hover, .sf__dir a:focus-visible { color: var(--text); translate: 4px 0; }
+.sf__dir a:hover::after, .sf__dir a:focus-visible::after { opacity: 1; }
+.sf__dir a[aria-current="page"] { color: var(--text); }
+.sf__dir li:has(> a[aria-current="page"])::after { border-color: var(--signal); }
+.sf__dir .ext { margin-left: 6px; font-size: 11px; color: var(--dim); }
+
+/* ASCII field */
+.sf__field { position: relative; height: clamp(170px, 22vw, 280px); border-top: 1px solid var(--line); background: var(--panel); overflow: hidden; }
+.sf__field canvas { position: absolute; inset: 0; width: 100%; height: 100%; cursor: crosshair; touch-action: pan-y; }
+.sf__note { position: absolute; z-index: 2; margin: 0; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); pointer-events: none; font-variant-numeric: tabular-nums; }
+.sf__note span { color: var(--muted); }
+.sf__note--tl { top: 14px; left: 16px; }
+.sf__note--tr { top: 14px; right: 16px; }
+.sf__note--bl { bottom: 12px; left: 16px; }
+@media (hover: none), (max-width: 640px) { .sf__note--tr { display: none; } }
+
+/* status strip */
+.sf__strip { display: flex; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+.sf__strip li {
+  display: flex; align-items: center; gap: 10px; padding: 13px 16px; border-right: 1px solid var(--line);
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap;
+}
+.sf__strip span { color: var(--dim); }
+.sf__strip b { font-weight: 400; color: var(--text); display: inline-flex; align-items: center; }
+.sf__strip .dot { margin-right: 8px; }
+.sf__strip .sf__strip-id { margin-left: auto; border-right: 0; border-left: 1px solid var(--line); }
+
+/* baseline */
+.sf__base { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px var(--pad); border-top: 1px solid var(--line); }
+.sf__base p { margin: 0; font-size: 13px; color: var(--muted); }
+.sf__base-end { display: flex; align-items: center; gap: 20px; }
+.sf__totop {
+  font-family: var(--mono); font-size: 12px; color: var(--muted); padding: 6px 0;
+  background: linear-gradient(var(--signal), var(--signal)) left bottom / 0 1px no-repeat;
+  transition: background-size 0.25s ease, color 0.15s ease;
+}
+.sf__totop:hover, .sf__totop:focus-visible { color: var(--text); background-size: 100% 1px; }
+
+@media (max-width: 900px) {
+  .sf__top { grid-template-columns: 1fr; gap: 48px; }
+  .sf__statement { max-width: 26ch; }
+}
+@media (max-width: 640px) {
+  .sf__dirs { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 16px; }
+  .sf__dir a { min-height: 40px; }
+  .sf__field { height: 120px; }
+  .sf__strip { display: grid; grid-template-columns: 1fr 1fr; }
+  .sf__strip li { border-bottom: 1px solid var(--line); padding: 12px 14px; }
+  .sf__strip li:nth-child(2n) { border-right: 0; }
+  .sf__strip .sf__strip-id { margin-left: 0; border-left: 0; border-bottom: 0; }
+  .sf__strip li:nth-child(3) { border-bottom: 0; }
+  .sf__base { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .sf__base-end { width: 100%; justify-content: space-between; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sf__dir li::after, .sf__dir a, .sf__dir a::after, .sf__totop { transition: none; }
+}
 
 /* ---------- Reveal: opacity only, once ---------- */
 .reveal { opacity: 0; transition: opacity 0.5s ease; }
