@@ -3,11 +3,12 @@
 Static site, no build step: plain HTML, CSS and JS.
 
 ```
-index.html        landing: hero + globe viewport, method, yapFlow demo, team, contact
-projects.html     project index, yapFlow, log
+index.html        landing: hero + globe viewport, method, Yapflow demo, team, contact
+projects.html     project index, Yapflow, log
 lab.html          how we work (the loop + house rules) and contact
 assets/css/styles.css   all styles; tokens are CSS variables in :root
-assets/js/main.js       ASCII globe, scroll roll + parallax, leader lines, typed text, meters, flashcard, reveals
+assets/js/earth-mask.js land mask for the globe
+assets/js/main.js       ASCII earth globe, scroll roll + parallax, leader lines, typed text, meters, flashcard, reveals
 assets/img/             wordmark SVGs (on dark / on light)
 brand/                  every logo + favicon export (SVG, PNG, ICO)
 favicon.*, apple-touch-icon.png, icon-*.png   served from the site root
@@ -28,7 +29,7 @@ Then open http://localhost:4173.
 
 ## Design system: "lab instrument panel"
 
-Dark only. Geist for reading, Geist Mono for labels, commands and data. One signal colour, hairlines, square corners.
+Dark only. Geist Mono for titles, labels, commands and data; Geist (sans) for paragraphs and buttons. One signal colour, hairlines, square corners.
 
 References studied (live pages, Nov 2026): Linear (type, section intros, open columns, quiet nav), Stripe (bold lead-in paragraphs, text links over secondary buttons), Apple (scroll-pinned scenes), Framer (tight display type), Pentagram (the work is the hero).
 
@@ -41,6 +42,8 @@ References studied (live pages, Nov 2026): Linear (type, section intros, open co
 | `--signal` | `#3DDC84` | brand green: live states, meters, primary action, text links |
 
 Fonts (Google Fonts): Geist 400 to 600, Geist Mono 400 to 600.
+
+Globe: an ASCII earth. `assets/js/earth-mask.js` holds a 1 degree land mask (Natural Earth 1:50m land, public domain, via world-atlas). Each character cell on a fixed grid is mapped back onto the rotating sphere; land is drawn in lit glyphs, ocean stays dark apart from faint 30 degree graticule dots, and a soft glow sits outside the limb. Brand name is written "Yapflow".
 
 Building blocks in `styles.css`:
 

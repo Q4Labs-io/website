@@ -12,35 +12,28 @@
   const canvas = document.querySelector("#orb");
   if (canvas) {
     const ctx = canvas.getContext("2d");
-    const ramp = " .·:-=+*#";
-    const N = 760;
-    const pts = [];
-    const golden = Math.PI * (3 - Math.sqrt(5));
-    for (let i = 0; i < N; i++) {
-      const y = 1 - (i / (N - 1)) * 2;
-      const r = Math.sqrt(1 - y * y);
-      const th = golden * i;
-      pts.push([Math.cos(th) * r, y, Math.sin(th) * r, i % 41 === 0 ? (i % 82 === 0 ? "q" : "4") : null]);
-    }
-    /* graticule: 6 meridians + 5 parallels, sampled as polylines */
-    const rings = [];
-    const S = 72;
-    for (let m = 0; m < 6; m++) {
-      const a = (m / 6) * Math.PI, ring = [];
-      for (let k = 0; k <= S; k++) {
-        const t = (k / S) * Math.PI * 2;
-        ring.push([Math.cos(t) * Math.cos(a), Math.sin(t), Math.cos(t) * Math.sin(a)]);
+    /* Earth: a 1-degree land mask (assets/js/earth-mask.js). Every character cell on a
+       fixed grid is mapped back onto the rotating sphere, so the glyphs stay aligned like
+       a terminal while the continents turn underneath. */
+    const MW = 360, MH = 180;
+    let mask = null;
+    try {
+      const raw = atob(window.Q4_EARTH || "");
+      if (raw.length === (MW * MH) / 8) {
+        mask = new Uint8Array(raw.length);
+        for (let i = 0; i < raw.length; i++) mask[i] = raw.charCodeAt(i);
       }
-      rings.push(ring);
-    }
-    for (const lat of [-0.6, -0.3, 0, 0.3, 0.6]) {
-      const r = Math.sqrt(1 - lat * lat), ring = [];
-      for (let k = 0; k <= S; k++) {
-        const t = (k / S) * Math.PI * 2;
-        ring.push([Math.cos(t) * r, lat, Math.sin(t) * r]);
-      }
-      rings.push(ring);
-    }
+    } catch (e) { mask = null; }
+    const isLand = (latDeg, lonDeg) => {
+      if (!mask) return false;
+      const r = Math.min(MH - 1, Math.max(0, Math.floor(90 - latDeg)));
+      const c = ((Math.floor(lonDeg + 180) % MW) + MW) % MW;
+      const i = r * MW + c;
+      return (mask[i >> 3] >> (i & 7)) & 1;
+    };
+    const ramp = ".:-=+*#%@";
+    const LIGHT = (() => { const v = [-0.5, -0.55, 0.68], l = Math.hypot(...v); return v.map((x) => x / l); })();
+    const DEG = 180 / Math.PI;
 
     /* Colours come from the stylesheet, with fallbacks: Safari can run this script
        before the stylesheet has loaded, and an empty colour draws black on black. */
@@ -74,7 +67,7 @@
       M = [...a, ...b, ...c];
     }
     function turn(ax, ay) { M = mul(mul(rotY(ax), rotX(ay)), M); }
-    turn(0.6, -0.38);
+    turn(-0.35, -0.42);                 // open on Africa and Europe, tipped toward the viewer
 
     function resize() {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -90,41 +83,65 @@
       const R = size * 0.44, cx = size / 2, cy = size / 2;
       const [m0, m1, m2, m3, m4, m5, m6, m7, m8] = M;
 
-      // rim
-      ctx.globalAlpha = 0.35;
+      // atmosphere: a soft green falloff just outside the limb, and a hairline rim
+      const halo = ctx.createRadialGradient(cx, cy, R, cx, cy, R * 1.12);
+      halo.addColorStop(0, "rgba(61, 220, 132, 0.13)");
+      halo.addColorStop(1, "rgba(61, 220, 132, 0)");
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = halo;
+      ctx.beginPath();
+      ctx.arc(cx, cy, R * 1.12, 0, Math.PI * 2);
+      ctx.arc(cx, cy, R, 0, Math.PI * 2, true);   // ring only: the disc itself stays dark
+      ctx.fill();
+      ctx.globalAlpha = 0.45;
       ctx.strokeStyle = line;
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.arc(cx, cy, R, 0, Math.PI * 2);
+      ctx.arc(cx, cy, R + 0.5, 0, Math.PI * 2);
       ctx.stroke();
 
-      // graticule: front half visible, back half faint
-      ctx.strokeStyle = green;
-      for (const ring of rings) {
-        for (let k = 1; k < ring.length; k++) {
-          const [ax, ay, az] = ring[k - 1], [bx, by, bz] = ring[k];
-          const z = m6 * (ax + bx) / 2 + m7 * (ay + by) / 2 + m8 * (az + bz) / 2;
-          ctx.globalAlpha = z > 0 ? 0.08 + 0.14 * z : 0.03;
-          ctx.beginPath();
-          ctx.moveTo(cx + (m0 * ax + m1 * ay + m2 * az) * R, cy + (m3 * ax + m4 * ay + m5 * az) * R);
-          ctx.lineTo(cx + (m0 * bx + m1 * by + m2 * bz) * R, cy + (m3 * bx + m4 * by + m5 * bz) * R);
-          ctx.stroke();
-        }
-      }
-
-      // points
-      const fs = Math.max(9, Math.round(size / 44));
-      ctx.font = `600 ${fs}px "Geist Mono", ui-monospace, monospace`;
+      // character grid
+      const rows = Math.round(Math.min(60, Math.max(30, size / 12.5)));
+      const ch = (2 * R) / rows;
+      const cw = ch * 0.6;
+      const cols = Math.floor((2 * R) / cw);
+      const x0 = cx - (cols * cw) / 2;
+      const tol = 90 / rows;             // half a cell, in degrees, for the graticule test
+      ctx.font = `500 ${ch.toFixed(2)}px "Geist Mono", ui-monospace, monospace`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillStyle = green;
-      for (const [px, py, pz, special] of pts) {
-        const z = m6 * px + m7 * py + m8 * pz;
-        const d = (z + 1) / 2;
-        if (d < 0.1) continue;
-        const ch = special && d > 0.55 ? special : ramp[Math.min(ramp.length - 1, Math.floor(d * (ramp.length - 1)) + 1)];
-        ctx.globalAlpha = 0.1 + 0.9 * d * d;
-        ctx.fillText(ch, cx + (m0 * px + m1 * py + m2 * pz) * R, cy + (m3 * px + m4 * py + m5 * pz) * R);
+
+      for (let j = 0; j < rows; j++) {
+        const py = cy - R + (j + 0.5) * ch;
+        const y = (py - cy) / R;
+        for (let i = 0; i < cols; i++) {
+          const px = x0 + (i + 0.5) * cw;
+          const x = (px - cx) / R;
+          const d2 = x * x + y * y;
+          if (d2 >= 1) continue;
+          const z = Math.sqrt(1 - d2);
+          // screen normal back to the globe's own frame (M is orthonormal, so M^T inverts it)
+          const wx = m0 * x + m3 * y + m6 * z;
+          const wy = m1 * x + m4 * y + m7 * z;
+          const wz = m2 * x + m5 * y + m8 * z;
+          const lat = Math.asin(Math.max(-1, Math.min(1, -wy))) * DEG;
+          const lon = Math.atan2(wx, wz) * DEG;
+          const lit = Math.max(0, x * LIGHT[0] + y * LIGHT[1] + z * LIGHT[2]);
+          const b = (0.16 + 0.84 * lit) * (0.5 + 0.5 * z);   // light + limb darkening
+          if (isLand(lat, lon)) {
+            const k = Math.min(ramp.length - 1, Math.floor(b * ramp.length));
+            ctx.globalAlpha = 0.28 + 0.72 * b;
+            ctx.fillText(ramp[k], px, py);
+          } else {
+            const onLat = Math.abs(lat / 30 - Math.round(lat / 30)) * 30 < tol;
+            const onLon = Math.abs(lon / 30 - Math.round(lon / 30)) * 30 * Math.cos(lat / DEG) < tol * 0.6;
+            if ((onLat || onLon) && (i + j) % 2 === 0) {
+              ctx.globalAlpha = 0.05 + 0.16 * b;
+              ctx.fillText("·", px, py);
+            }
+          }
+        }
       }
       ctx.globalAlpha = 1;
     }
