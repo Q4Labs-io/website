@@ -79,6 +79,19 @@
     }));
   }
 
+  /* back-to-top wakes up the first time it is fully in view */
+  const btn = document.querySelector(".sf__totop");
+  if (btn) {
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver(([e]) => {
+        if (e.isIntersecting) { btn.classList.add("is-ready"); io.disconnect(); }
+      }, { threshold: 1 });
+      io.observe(btn);
+    } else {
+      btn.classList.add("is-ready");
+    }
+  }
+
   /* tree summary, counted from the markup so it never drifts */
   const sum = document.querySelector("[data-sf-tree]");
   if (sum) {
