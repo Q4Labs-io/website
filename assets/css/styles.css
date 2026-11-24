@@ -74,6 +74,12 @@ img, svg { display: block; max-width: 100%; }
 .block::before { left: -6px; }
 .block::after { right: -6px; }
 
+/* Every section is at least one screen tall (the visible area under the bar), content centred.
+   dvh tracks mobile browser toolbars; vh is the fallback. The hero scene sizes itself. */
+:root { --screen: calc(100vh - var(--bar)); }
+@supports (height: 100dvh) { :root { --screen: calc(100dvh - var(--bar)); } }
+main > .block:not(.scene) { min-height: var(--screen); display: flex; flex-direction: column; justify-content: center; }
+
 /* ---------- Type: sans reads, mono labels ---------- */
 .lbl {
   font-family: var(--mono); font-size: 11px; line-height: 1.4; letter-spacing: 0.08em; text-transform: uppercase;
@@ -215,7 +221,7 @@ img, svg { display: block; max-width: 100%; }
 @media (max-width: 900px) { .hero-head { grid-template-columns: 1fr; } }
 
 .viewport {
-  position: relative; height: clamp(480px, calc(100svh - 345px), 660px);
+  position: relative; height: clamp(480px, calc(100vh - 345px), 660px); height: clamp(480px, calc(100dvh - 345px), 660px);
   border-top: 1px solid var(--line); overflow: hidden;
   background: radial-gradient(circle at 50% 50%, rgba(61, 220, 132, 0.05), transparent 52%), var(--panel);
 }
@@ -259,8 +265,8 @@ img, svg { display: block; max-width: 100%; }
 /* Pinned scene (Apple): desktop, motion allowed. The stage sticks under the bar
    while scroll progress drives the headline out, the globe to centre and the
    callouts in, one at a time. Enabled from main.js with .is-pinned. */
-.scene.is-pinned { height: 260svh; }
-.scene.is-pinned .scene__stage { position: sticky; top: var(--bar); height: calc(100svh - var(--bar)); overflow: hidden; }
+.scene.is-pinned { height: 260vh; height: 260dvh; }
+.scene.is-pinned .scene__stage { position: sticky; top: var(--bar); height: calc(100vh - var(--bar)); height: calc(100dvh - var(--bar)); overflow: hidden; }
 .scene.is-pinned .viewport { position: absolute; inset: 0; height: auto; border-top: 0; }
 .scene.is-pinned .hero-head {
   position: absolute; z-index: 6; top: 0; left: 0; width: min(48%, 600px); grid-template-columns: 1fr;
@@ -425,7 +431,8 @@ img, svg { display: block; max-width: 100%; }
 .sf__dir .ext { margin-left: 6px; font-size: 11px; color: var(--dim); }
 
 /* ASCII field */
-.sf__field { position: relative; height: clamp(170px, 22vw, 280px); border-top: 1px solid var(--line); background: var(--panel); overflow: hidden; }
+.sf > .frame { min-height: var(--screen); display: flex; flex-direction: column; }
+.sf__field { position: relative; flex: 1 0 auto; min-height: clamp(170px, 22vw, 280px); border-top: 1px solid var(--line); background: var(--panel); overflow: hidden; }
 .sf__field canvas { position: absolute; inset: 0; width: 100%; height: 100%; cursor: crosshair; touch-action: pan-y; }
 .sf__note { position: absolute; z-index: 2; margin: 0; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); pointer-events: none; font-variant-numeric: tabular-nums; }
 .sf__note span { color: var(--muted); }
@@ -462,7 +469,7 @@ img, svg { display: block; max-width: 100%; }
 @media (max-width: 640px) {
   .sf__dirs { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 16px; }
   .sf__dir a { min-height: 40px; }
-  .sf__field { height: 120px; }
+  .sf__field { min-height: 120px; }
   .sf__strip { display: grid; grid-template-columns: 1fr 1fr; }
   .sf__strip li { border-bottom: 1px solid var(--line); padding: 12px 14px; }
   .sf__strip li:nth-child(2n) { border-right: 0; }
@@ -473,6 +480,26 @@ img, svg { display: block; max-width: 100%; }
 }
 @media (prefers-reduced-motion: reduce) {
   .sf__dir li::after, .sf__dir a, .sf__dir a::after, .sf__totop { transition: none; }
+}
+
+/* ---------- Back-to-top glitch (footer.js) ----------
+   A half-second signal fault: the page jitters, dark tear bands of ASCII noise and
+   thin green scan lines flicker across, the scroll jumps home mid-glitch. */
+.glitch { position: fixed; inset: 0; z-index: 200; pointer-events: none; overflow: hidden; }
+.glitch::before {
+  content: ""; position: absolute; inset: 0;
+  background: repeating-linear-gradient(to bottom, rgba(61, 220, 132, 0.06) 0 1px, transparent 1px 3px);
+}
+.glitch i {
+  position: absolute; left: 0; right: 0; display: block; overflow: hidden; white-space: nowrap;
+  font: 500 11px/1 var(--mono); letter-spacing: 0.3em; color: rgba(61, 220, 132, 0.55);
+  background: rgba(7, 8, 7, 0.92); border-block: 1px solid rgba(61, 220, 132, 0.18);
+  display: flex; align-items: center;
+}
+.glitch i.line { background: var(--signal); border: 0; opacity: 0.7; }
+.glitch b {
+  position: absolute; left: var(--pad); bottom: 24px; font: 500 12px var(--mono); color: var(--signal);
+  background: var(--bg); padding: 4px 8px; border: 1px solid var(--line-2);
 }
 
 /* ---------- Reveal: opacity only, once ---------- */

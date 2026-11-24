@@ -20,6 +20,65 @@
     });
   }
 
+  /* ---------- Back to top: a short signal glitch, then home ----------
+     ~540 ms in 45 ms steps. The page jitters, tear bands of ASCII noise and thin
+     scan lines flicker, and the scroll jumps to the top halfway through, so the
+     glitch resolves onto the hero. Reduced motion: a plain jump. */
+  const toTop = document.querySelectorAll('a[href="#top"]');
+  if (toTop.length) {
+    const NOISE = ":-=+*#%@01/\\|_";
+    const noise = (n) => { let s = ""; for (let i = 0; i < n; i++) s += NOISE[(Math.random() * NOISE.length) | 0]; return s; };
+    let busy = false;
+    const jump = () => window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    toTop.forEach((a) => a.addEventListener("click", (e) => {
+      e.preventDefault();
+      const keyboard = e.detail === 0;
+      const settle = () => {
+        if (keyboard) { const home = document.querySelector(".bar .logo"); if (home) home.focus({ preventScroll: true }); }
+      };
+      if (reduceMotion || busy) { jump(); settle(); return; }
+      busy = true;
+
+      const layers = [".bar", "main", "footer"].map((s) => document.querySelector(s)).filter(Boolean);
+      const ov = document.createElement("div");
+      ov.className = "glitch";
+      ov.setAttribute("aria-hidden", "true");
+      const bars = Array.from({ length: 8 }, () => ov.appendChild(document.createElement("i")));
+      const tag = ov.appendChild(document.createElement("b"));
+      tag.textContent = "$ cd ~";
+      document.body.appendChild(ov);
+
+      const TOTAL = 12, JUMP_AT = 6;
+      let n = 0;
+      const tick = () => {
+        n++;
+        const hard = n % 3 === 0;
+        layers.forEach((el) => {
+          el.style.translate = `${((Math.random() * 2 - 1) * (hard ? 16 : 5)).toFixed(1)}px ${((Math.random() * 2 - 1) * 2).toFixed(1)}px`;
+          el.style.opacity = hard ? "0.82" : "";
+        });
+        bars.forEach((b) => {
+          const thin = Math.random() < 0.35;
+          const h = thin ? 1 + ((Math.random() * 2) | 0) : 6 + Math.random() * 34;
+          b.className = thin ? "line" : "";
+          b.style.top = `${(Math.random() * 100).toFixed(1)}%`;
+          b.style.height = `${h.toFixed(0)}px`;
+          b.style.translate = `${((Math.random() * 2 - 1) * 60).toFixed(0)}px 0`;
+          b.style.visibility = Math.random() < 0.75 ? "visible" : "hidden";
+          b.textContent = thin ? "" : noise(160);
+        });
+        tag.style.visibility = n >= 3 && n <= 9 ? "visible" : "hidden";
+        if (n === JUMP_AT) jump();
+        if (n < TOTAL) { setTimeout(tick, 45); return; }
+        layers.forEach((el) => { el.style.translate = ""; el.style.opacity = ""; });
+        ov.remove();
+        busy = false;
+        settle();
+      };
+      tick();
+    }));
+  }
+
   /* tree summary, counted from the markup so it never drifts */
   const sum = document.querySelector("[data-sf-tree]");
   if (sum) {

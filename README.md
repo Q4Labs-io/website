@@ -71,3 +71,8 @@ Shared by all three pages (identical markup apart from `aria-current`), inside `
 - ASCII field: the `q4_labs` wordmark rendered as a character grid by `footer.js`, lit by a light that drifts slowly and follows the pointer. The readout is the light's own grid position. Runs at about 30 fps only while on screen; reduced motion draws it once.
 - Status strip: status, now, next, identifier. No live metrics.
 - Baseline: copyright, LinkedIn, back to top. No legal pages exist yet, so none are linked.
+- Back to top (`a[href="#top"]`): a ~540 ms glitch (page jitter, ASCII tear bands, scan lines, `$ cd ~`) that jumps home halfway through. Reduced motion: plain jump.
+
+## Layout height
+
+Every `main > .block` (except the hero scene) and the footer is at least one screen tall under the bar: `--screen: calc(100dvh - var(--bar))`, with a `vh` fallback. Content is centred vertically. The hero scene uses `dvh` for its pin.
