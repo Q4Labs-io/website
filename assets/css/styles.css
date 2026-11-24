@@ -357,6 +357,9 @@ main > .block:not(.scene) { min-height: var(--screen); display: flex; flex-direc
 .project { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 .project__info { padding: clamp(24px, 3vw, 36px) clamp(16px, 2.5vw, 32px); display: grid; gap: 20px; align-content: start; }
 .project__info .display { font-size: clamp(40px, 4.6vw, 60px); }
+/* hero headline in the pixel face. Sizes sit on multiples of 8px so the pixels stay even. */
+.display--pixel { font-family: "Silkscreen", var(--mono); font-size: clamp(40px, 6vw, 72px); line-height: 1.15; letter-spacing: 0; font-weight: 400; text-transform: none; }
+@media (max-width: 480px) { .display--pixel { letter-spacing: -0.04em; } }
 .project__list { margin: 0; padding: 0; list-style: none; display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); font-size: 14px; }
 .project__list li { background: var(--bg); padding: 10px 12px; color: var(--muted); }
 .project__term { display: flex; flex-direction: column; }
